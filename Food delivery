@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Delivery</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: rgba(255,255,255,0.05);
+      width: 100%;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff6a00;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .container {
+      display: flex;
+      width: 90%;
+      margin-top: 20px;
+      gap: 20px;
+    }
+
+    .restaurants, .cart {
+      background: rgba(255,255,255,0.07);
+      border-radius: 15px;
+      padding: 20px;
+      flex: 1;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .restaurant {
+      margin-bottom: 20px;
+    }
+
+    .restaurant img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .restaurant h2 {
+      margin: 10px 0 5px;
+      color: #ff6a00;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+      padding: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    .menu-item button {
+      background: linear-gradient(45deg, #ff6a00, #ee0979);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .menu-item button:hover {
+      transform: scale(1.05);
+    }
+
+    .cart h2 {
+      margin-top: 0;
+      color: #ff6a00;
+    }
+
+    .cart-items {
+      margin-bottom: 15px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+    }
+
+    .order-btn {
+      width: 100%;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.2s;
+    }
+
+    .order-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <header>🍽️ Food Delivery Website</header>
+
+  <div class="container">
+    <div class="restaurants">
+      <div class="restaurant">
+        <img src="https://source.unsplash.com/600x200/?pizza" alt="Pizza House">
+        <h2>Pizza House</h2>
+        <div class="menu-item">
+          <span>Margherita Pizza - ₹250</span>
+          <button onclick="addToCart('Margherita Pizza', 250)">Add</button>
+        </div>
+        <div class="menu-item">
+          <span>Pepperoni Pizza - ₹350</span>
+          <button onclick="addToCart('Pepperoni Pizza', 350)">Add</button>
+        </div>
+      </div>
+
+      <div class="restaurant">
+        <img src="https://source.unsplash.com/600x200/?burger" alt="Burger Joint">
+        <h2>Burger Joint</h2>
+        <div class="menu-item">
+          <span>Cheese Burger - ₹180</span>
+          <button onclick="addToCart('Cheese Burger', 180)">Add</button>
+        </div>
+        <div class="menu-item">
+          <span>Veggie Burger - ₹150</span>
+          <button onclick="addToCart('Veggie Burger', 150)">Add</button>
+        </div>
+      </div>
+
+      <div class="restaurant">
+        <img src="https://source.unsplash.com/600x200/?noodles" alt="Asian Delight">
+        <h2>Asian Delight</h2>
+        <div class="menu-item">
+          <span>Veg Noodles - ₹200</span>
+          <button onclick="addToCart('Veg Noodles', 200)">Add</button>
+        </div>
+        <div class="menu-item">
+          <span>Chicken Noodles - ₹250</span>
+          <button onclick="addToCart('Chicken Noodles', 250)">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart">
+      <h2>Your Cart 🛒</h2>
+      <div class="cart-items" id="cartItems"></div>
+      <h3>Total: ₹<span id="total">0</span></h3>
+      <button class="order-btn" onclick="placeOrder()">Place Order</button>
+    </div>
+  </div>
+
+  <script>
+    function getCart() {
+      return JSON.parse(localStorage.getItem("cart") || "[]");
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function addToCart(name, price) {
+      let cart = getCart();
+      cart.push({ name, price });
+      saveCart(cart);
+      loadCart();
+    }
+
+    function loadCart() {
+      let cart = getCart();
+      let cartItems = document.getElementById("cartItems");
+      let total = 0;
+      cartItems.innerHTML = "";
+      cart.forEach((item, i) => {
+        total += item.price;
+        cartItems.innerHTML += `<div class="cart-item">
+          <span>${item.name}</span>
+          <span>₹${item.price} <button onclick="removeItem(${i})">❌</button></span>
+        </div>`;
+      });
+      document.getElementById("total").textContent = total;
+    }
+
+    function removeItem(index) {
+      let cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      loadCart();
+    }
+
+    function placeOrder() {
+      let cart = getCart();
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+      alert("✅ Order placed successfully!");
+      localStorage.removeItem("cart");
+      loadCart();
+    }
+
+    loadCart();
+  </script>
+</body>
+</html>
