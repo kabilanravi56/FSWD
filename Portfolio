@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kabilan R - Portfolio</title>
+  <style>
+    /* ===== Global ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+      display: flex;
+    }
+
+    h1, h2 {
+      margin-bottom: 15px;
+    }
+
+    /* ===== Sidebar Navigation ===== */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 220px;
+      background: rgba(0, 0, 0, 0.9);
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .sidebar h2 {
+      color: #ff4d4d;
+      margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    .sidebar a {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      text-align: center;
+      color: #fff;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover, 
+    .sidebar a.active {
+      background: #ff4d4d;
+      color: #000;
+    }
+
+    /* ===== Sections ===== */
+    main {
+      margin-left: 220px;
+      width: calc(100% - 220px);
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .content-box {
+      background: rgba(255,255,255,0.08);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      max-width: 800px;
+      width: 100%;
+      animation: fadeInUp 1s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #ff4d4d;
+      color: #000;
+      font-weight: bold;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #cc0000;
+      transform: scale(1.05);
+    }
+
+    /* ===== Lists ===== */
+    ul {
+      text-align: left;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    ul li {
+      margin-bottom: 10px;
+      list-style: "⭐ ";
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100px;
+      }
+      .sidebar a {
+        font-size: 12px;
+        padding: 12px 10px;
+      }
+      main {
+        margin-left: 100px;
+        width: calc(100% - 100px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Portfolio</h2>
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Home -->
+    <section id="home">
+      <div class="content-box">
+        <h1>👋 Hey, I'm <span style="color:#ff4d4d;">Kabilan.R</span></h1>
+        <p>A passionate IT student aspiring to be a skilled <b>Full Stack Developer</b>.</p>
+        <a href="#about" class="btn">Explore</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <div class="content-box">
+        <h2>About Me</h2>
+        <p>
+          I'm Kabilan.R, an IT student with a growing interest in Full Stack Development, 
+          especially using Java. I am currently learning Java and working on strengthening my skills 
+          in backend and frontend development. My goal is to become a skilled Full Stack Developer 
+          and contribute to real-world software projects.
+        </p>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <div class="content-box">
+        <h2>Skills</h2>
+        <ul>
+          <li><b>Programming Languages:</b> Java, C, Python</li>
+          <li><b>Web Development:</b> HTML, CSS, JavaScript</li>
+          <li><b>Backend Development:</b> Core Java, JDBC</li>
+          <li><b>Database Management:</b> MySQL</li>
+          <li><b>Developer Tools:</b> Git, VS Code, Eclipse, IntelliJ IDEA</li>
+          <li><b>Core Strengths:</b> Problem-solving, Adaptability, Continuous Learning</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Achievements -->
+    <section id="achievements">
+      <div class="content-box">
+        <h2>My Achievements</h2>
+        <ul>
+          <li>Participated in national and college-level hackathons demonstrating problem-solving and collaboration</li>
+          <li>Completed Java Programming Certification to strengthen development skills</li>
+          <li>Improved problem-solving abilities by practicing on platforms such as HackerRank and LeetCode</li>
+          <li>Presented project and research ideas in seminars and academic discussions</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="content-box">
+        <h2>Contact</h2>
+        <p>Email: <b style="color:#ff4d4d;">kabilan@gmail.com</b></p>
+        <p>Phone: <b style="color:#ff4d4d;">7448458417</b></p>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 Kabilan.R | Portfolio Website</p>
+    </footer>
+  </main>
+
+  <!-- JS for Active Link Highlight -->
+  <script>
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll(".sidebar a");
+
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= sectionTop - sectionHeight / 3) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === "#" + current) {
+          link.classList.add("active");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
