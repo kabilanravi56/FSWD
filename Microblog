@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Microblog with Follow System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f8fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 600px;
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #1da1f2;
+      text-align: center;
+    }
+    select {
+      padding: 6px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 100%;
+      height: 60px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    button {
+      background: #1da1f2;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #0d8ddb;
+    }
+    .feed {
+      margin-top: 20px;
+    }
+    .post {
+      background: #f0f8ff;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    .post strong {
+      color: #1da1f2;
+    }
+    .users {
+      margin-top: 15px;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    .user {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .user button {
+      background: #eee;
+      color: black;
+      border-radius: 10px;
+      padding: 5px 10px;
+    }
+    .user button.following {
+      background: #1da1f2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Mini Microblog</h2>
+
+    <!-- User selector -->
+    <label for="currentUser"><b>Logged in as:</b></label>
+    <select id="currentUser" onchange="loadFeed()"></select>
+
+    <!-- Post box -->
+    <textarea id="postInput" placeholder="What's happening?"></textarea>
+    <button onclick="addPost()">Post</button>
+
+    <!-- Users list -->
+    <div class="users">
+      <h4>People You Can Follow</h4>
+      <div id="usersList"></div>
+    </div>
+
+    <!-- Feed -->
+    <h3>Your Feed</h3>
+    <div class="feed" id="feed"></div>
+  </div>
+
+  <script>
+    // Fake users
+    const users = [
+      { id: 1, name: "Alice", following: [], posts: [] },
+      { id: 2, name: "Bob", following: [], posts: [] },
+      { id: 3, name: "Charlie", following: [], posts: [] },
+    ];
+
+    // Initialize dropdown
+    const currentUserSelect = document.getElementById("currentUser");
+    users.forEach(user => {
+      const option = document.createElement("option");
+      option.value = user.id;
+      option.textContent = user.name;
+      currentUserSelect.appendChild(option);
+    });
+
+    function getCurrentUser() {
+      const id = parseInt(currentUserSelect.value);
+      return users.find(u => u.id === id);
+    }
+
+    // Add post
+    function addPost() {
+      const user = getCurrentUser();
+      const input = document.getElementById("postInput");
+      const text = input.value.trim();
+
+      if (text === "") {
+        alert("Post cannot be empty!");
+        return;
+      }
+
+      user.posts.push({ author: user.name, content: text, time: new Date() });
+      input.value = "";
+      loadFeed();
+    }
+
+    // Load feed (only from followed users + self)
+    function loadFeed() {
+      const user = getCurrentUser();
+      const feed = document.getElementById("feed");
+      feed.innerHTML = "";
+
+      let visiblePosts = [...user.posts];
+      user.following.forEach(followId => {
+        const followedUser = users.find(u => u.id === followId);
+        visiblePosts = visiblePosts.concat(followedUser.posts);
+      });
+
+      visiblePosts.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+      if (visiblePosts.length === 0) {
+        feed.innerHTML = "<p>No posts yet. Follow people or create a post!</p>";
+      } else {
+        visiblePosts.forEach(p => {
+          const post = document.createElement("div");
+          post.className = "post";
+          post.innerHTML = `<strong>${p.author}</strong>: ${p.content}`;
+          feed.appendChild(post);
+        });
+      }
+
+      renderUsersList();
+    }
+
+    // Render follow/unfollow buttons
+    function renderUsersList() {
+      const user = getCurrentUser();
+      const usersList = document.getElementById("usersList");
+      usersList.innerHTML = "";
+
+      users.forEach(u => {
+        if (u.id === user.id) return; // skip self
+
+        const div = document.createElement("div");
+        div.className = "user";
+
+        const btn = document.createElement("button");
+        if (user.following.includes(u.id)) {
+          btn.textContent = "Following";
+          btn.classList.add("following");
+        } else {
+          btn.textContent = "Follow";
+        }
+
+        btn.onclick = () => {
+          if (user.following.includes(u.id)) {
+            user.following = user.following.filter(f => f !== u.id);
+          } else {
+            user.following.push(u.id);
+          }
+          loadFeed();
+        };
+
+        div.innerHTML = `<span>${u.name}</span>`;
+        div.appendChild(btn);
+        usersList.appendChild(div);
+      });
+    }
+
+    // Start app
+    loadFeed();
+  </script>
+</body>
+</html>
